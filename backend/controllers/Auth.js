@@ -60,9 +60,11 @@ exports.signup = async(req,res)=>{
 
         const otpExpires = Date.now() + 5 * 60 * 1000;
 
+        const hashedEmail = await bcrypt.hash(email,10);
+
         const user = await User.create({
             userName,
-            email,
+            email:hashedEmail,
             password:hashedPassword,
             avatar,
             otp,
@@ -98,9 +100,9 @@ exports.signup = async(req,res)=>{
 exports.verifyOTP =  async(req,res) =>{
     try {
         
-        const {email,otp} = req.body;
+        const {userName,otp} = req.body;
 
-        const user = await User.findOne({email});
+        const user = await User.findOne({userName});
 
         if(!user){
             return res.status(404).json({
@@ -131,6 +133,7 @@ exports.verifyOTP =  async(req,res) =>{
     );
 
     user.token = token;
+    user.isVerified = true
 
     await user.save();
 
@@ -152,5 +155,68 @@ exports.verifyOTP =  async(req,res) =>{
             error,
             message:"otp-verify failed"
         })
+    }
+}
+
+
+
+
+
+exports.login = async(req,res) =>{
+    try {
+        
+        const {password,userName} = req.body;
+
+        if(!password || !userName){
+            return res.status(400).json({
+                success: false,
+                message: `Please Fill up All the Required Fields`,
+            });
+        }
+
+        const user = await User.findOne({ userName })
+
+        if (!user) {
+        
+            return res.status(401).json({
+                success: false,
+                message: `User is not Registered with Us Please SignUp to Continue`,
+            });
+        }
+
+        if (await bcrypt.compare(password, user.password)) {
+            const token = jwt.sign(
+                { email: user.email, id: user._id },
+                process.env.JWT_SERVER_KEY,
+                {
+                expiresIn: "24h",
+                }
+        );
+
+        user.token = token;
+        user.password = undefined;
+        const options = {
+            expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+            httpOnly: true,
+        };
+        res.cookie("token", token, options).status(200).json({
+            success: true,
+            token,
+            user,
+            message: `User Login Success`,
+        });
+        } else {
+        return res.status(401).json({
+            success: false,
+            message: `Password is incorrect`,
+        });
+        }
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error,
+            message: `Login Failure Please Try Again`,
+        });
     }
 }
