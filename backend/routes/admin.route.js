@@ -1,8 +1,18 @@
-import express from "express";
-import { loginAdmin } from "../controllers/admin.controller.js";
+const express = require("express");
+const router = express.Router();
+const adminAuth = require("../middleware/admin.middleware");
 
-const adminRouter = express.Router();
+const { loginAdmin, logoutAdmin } = require("../controllers/admin.controller");
 
-adminRouter.post("/login", loginAdmin);
+router.post("/login-admin", loginAdmin);
+router.get("/me", adminAuth, (req, res) => {
+  res.json({
+    success: true,
+    message: "Welcome Admin", 
+    admin: req.admin
+  });
+});
+router.post("/logout-admin", adminAuth, logoutAdmin);
 
-export default adminRouter;
+
+module.exports = router;
