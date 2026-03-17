@@ -11,7 +11,6 @@ exports.createPost = async(req,res)=>{
         
         const { text } = req.body;
         const userId = req.user.id
-        console.log(userId)
 
         if(!text){
             return res.status(400).json({

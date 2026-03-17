@@ -1,6 +1,7 @@
 const Comment = require("../models/Comment")
 const User = require("../models/User")
 const Post = require("../models/Post")
+const axios = require('axios')
 
 
 //create comments 
@@ -24,11 +25,31 @@ exports.createComment = async(req,res)=>{
                 message:"failed to fetch userId OR login first"
             })
         }
+        const hateResult = await axios.post(
+            'http://127.0.0.1:10000/predict/hate',
+            {text}
+        )
+
+        const SentimentResult = await axios.post(
+            'http://127.0.0.1:10000/predict/sentiment',
+            {text}
+        )
+
+        const sentiment = {
+            label : SentimentResult.data.prediction,
+            confidence : SentimentResult.data.confidence
+        }
+        const hate = {
+            label : hateResult.data.prediction,
+            confidence : hateResult.data.confidence
+        }
 
         const comment = await Comment.create({
             post:postId,
             user:userId,
             text,
+            sentiment:sentiment,
+            hate:hate,
             parentComment:parentCommentId,
         })
 
@@ -56,8 +77,6 @@ exports.getPostComments = async(req,res)=>{
     try {
         
         const {postId} = req.body;
-
-
         if(!postId){
             return res.status(400).json({
                 success:false,
@@ -65,11 +84,12 @@ exports.getPostComments = async(req,res)=>{
             })
         }
 
-        const comments = await Comment.find({post:postId})
-        .populate("user","userName avatar")
-
+        const comments = await Comment.find({post:postId}).populate('user','userName avatar')
         const map = {};
         const roots = [];
+        comments.forEach(c => {
+            map[c._id] = { ...c.toObject(), children: [] };
+        });
 
         comments.forEach(c=>{
             if(c.parentComment){

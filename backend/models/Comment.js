@@ -23,6 +23,22 @@ const commentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment",
         default: null
+    },
+    sentiment:{
+        label:{
+            type:String,
+        },
+        confidence:{
+            type:Number
+        }
+    },
+    hate:{
+        label:{
+            type:String,
+        },
+        confidence:{
+            type:Number
+        }
     }
 
 }, { timestamps: true });
