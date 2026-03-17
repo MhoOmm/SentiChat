@@ -11,6 +11,6 @@ router.post("/create-comment", auth, createComment);
 router.get("/get-comments", getPostComments);
 
 
-router.post("/create-post",auth,createPost)
+router.post("/post",auth,createPost)
 
 module.exports = router

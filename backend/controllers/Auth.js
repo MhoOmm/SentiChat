@@ -142,7 +142,7 @@ exports.verifyOTP =  async(req,res) =>{
       httpOnly: true,
     };
 
-    return res.cookie("cookie-token", token, options).status(200).json({
+    return res.cookie("token", token, options).status(200).json({
         success: true,
         token,
         user,

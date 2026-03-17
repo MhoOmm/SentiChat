@@ -12,6 +12,23 @@ const postSchema = new mongoose.Schema({
         required:true
     },
 
+    sentiment:{
+        label:{
+            type:String,
+        },
+        confidence:{
+            type:Number
+        }
+    },
+    hate:{
+        label:{
+            type:String,
+        },
+        confidence:{
+            type:Number
+        }
+    }
+
 },{timestamps:true})
 
 module.exports = mongoose.model("Post",postSchema)

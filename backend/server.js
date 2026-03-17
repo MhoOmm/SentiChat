@@ -4,11 +4,10 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const connectDB = require("./config/mongodb");
-
-
 const adminRouter = require("./routes/admin.route");
 const userRoutes = require("./routes/userRoutes");
-const commentRoutes = require("./routes/CommentRoutes")
+
+const postRouter = require('./routes/postRouter')
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -18,7 +17,7 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = ["*"];
+const allowedOrigins = ["http://127.0.0.1:10000", "http://localhost:5173"];
 
 app.use(cors({
   origin: allowedOrigins,
@@ -31,7 +30,9 @@ app.get("/", (req,res) => {
 
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRoutes);
-app.use("/api/comment", commentRoutes);
+
+// post
+app.use('/api/chat',postRouter);
 
 app.listen(port, () => {
   console.log(`Server started on PORT:${port}`);
