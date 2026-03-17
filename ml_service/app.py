@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import pickle
+import os
 import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-app = FastAPI()
+app = Flask(__name__)
 
 # -------- Load GoEmotion Sentiment Model --------
 
@@ -122,3 +123,9 @@ def home():
             "/predict/hate"
         ]
     }
+    
+    
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+    
