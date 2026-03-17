@@ -2,9 +2,11 @@ const adminModel = require("../models/admin.model");
 const jwt = require("jsonwebtoken");
 
 const loginAdmin = async (req, res) => {
-  const { userName, email, password } = req.body;
+  // console.log("Req body:", req.body);
 
-  if (!userName || !email || !password) {
+  const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
     return res.json({
       success: false,
       message: "All fields are required",
@@ -12,7 +14,7 @@ const loginAdmin = async (req, res) => {
   }
 
   try {
-    const admin = await adminModel.findOne({ userName, email });
+    const admin = await adminModel.findOne({ username, email });
 
     if (!admin) {
       return res.status(401).json({
@@ -31,7 +33,7 @@ const loginAdmin = async (req, res) => {
     const token = jwt.sign(
       {
         id: admin._id,
-        userName: admin.userName,
+        username: admin.username,
         email: admin.email
       },
       process.env.JWT_SERVER_KEY,
@@ -44,7 +46,10 @@ const loginAdmin = async (req, res) => {
       token
     });
 
-  } catch (error) {
+  } 
+  catch (error) {
+    console.log("SERVER ERROR:", error); 
+
     res.status(500).json({
       success: false,
       message: "Server error",
