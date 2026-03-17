@@ -4,8 +4,11 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const connectDB = require("./config/mongodb");
+
+
 const adminRouter = require("./routes/admin.route");
 const userRoutes = require("./routes/userRoutes");
+const commentRoutes = require("./routes/CommentRoutes")
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -28,6 +31,7 @@ app.get("/", (req,res) => {
 
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRoutes);
+app.use("/api/comment", commentRoutes);
 
 app.listen(port, () => {
   console.log(`Server started on PORT:${port}`);
