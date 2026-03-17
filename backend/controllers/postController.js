@@ -1,3 +1,4 @@
+
 // const Comment = require("../models/Comment")
 const User = require("../models/User")
 const Post = require("../models/Post")
@@ -8,7 +9,9 @@ const axios = require("axios")
 exports.createPost = async(req,res)=>{
     try {
         
-        const { text, userId } = req.body;
+        const { text } = req.body;
+        const userId = req.user.id
+        console.log(userId)
 
         if(!text){
             return res.status(400).json({
@@ -50,7 +53,7 @@ exports.createPost = async(req,res)=>{
             hate:hate
         })
 
-        await User.findByIdAndUpdate(userId,{$push:{post:post._id}})
+        await User.findByIdAndUpdate(userId,{$push:{posts:post._id}})
 
         return res.status(200).json({
             success:true,
@@ -59,6 +62,7 @@ exports.createPost = async(req,res)=>{
         })
 
     } catch (error) {
+        console.log(error.message)
         return res.status(500).json({
             success:false,
             error,
@@ -66,5 +70,4 @@ exports.createPost = async(req,res)=>{
         })
     }
 }
-
 
