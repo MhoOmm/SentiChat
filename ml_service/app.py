@@ -6,7 +6,7 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-app = Flask(__name__)
+app = FastAPI()
 
 # -------- Load GoEmotion Sentiment Model --------
 
