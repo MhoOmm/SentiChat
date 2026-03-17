@@ -15,7 +15,7 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = ["*"];
+const allowedOrigins = ["http://localhost:3000", "http://localhost:5173"];
 
 app.use(cors({
   origin: allowedOrigins,
