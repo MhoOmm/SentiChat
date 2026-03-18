@@ -13,7 +13,7 @@ function App() {
         <Route path="/admin/login-admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/announcements" element={<Announcements />} />
-        <Route path="/admin/sentiment" element={<SentimentAnalysis />} />
+        <Route path="/admin/sentiments" element={<SentimentAnalysis />} />
       </Routes>
     </BrowserRouter>
   );

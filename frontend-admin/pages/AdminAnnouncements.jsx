@@ -12,6 +12,8 @@ export default function Announcements() {
   });
 
   const token = localStorage.getItem("adminToken");
+  console.log("Fetch token on announcement page:", token);
+
 
   useEffect(() => {
     fetchAnnouncements();

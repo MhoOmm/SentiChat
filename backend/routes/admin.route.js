@@ -11,14 +11,14 @@ router.post("/login-admin", loginAdmin);
 router.get("/dashboard", adminAuth, (req, res) => {
   res.json({
     success: true,
-    message: "Welcome Admin", 
+    message: "Welcome Admin",  
     admin: req.admin
-  });
+  }); 
 }); 
 router.post("/logout-admin", adminAuth, logoutAdmin);
 
 router.post("/announcements/create", createAnnouncement);
-router.get("/announcements/all", adminAuth, getAnnouncements);
-router.get("/sentiment/stats", adminAuth, getSentimentStats);
+router.get("/announcements/all", getAnnouncements);
+router.get("/sentiment/stats", getSentimentStats);
 
 module.exports = router;
