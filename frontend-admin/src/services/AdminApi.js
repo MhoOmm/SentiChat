@@ -13,3 +13,27 @@ export const getAdmin = (token) => {
     }
   });
 };
+
+export const getAnnouncements = (token) => {
+  return axios.get(`${API}/announcements/all`, {
+    headers: { 
+      Authorization: `Bearer ${token}` 
+    },
+  });
+};
+
+export const createAnnouncement = (data, token) => {
+  return axios.post(`${API}/announcements/create`, data, { 
+    headers: { 
+      Authorization: `Bearer ${token}` 
+    }, 
+  });
+};
+
+export const getSentiment = (token) => {
+  return axios.get(`${API}/sentiment/stats`, { 
+    headers: { 
+      Authorization: `Bearer ${token}` 
+    }, 
+  });
+};
