@@ -21,10 +21,16 @@ const userSchema = new mongoose.Schema(
             type:String,
             require:true
         },
-        comment:[
+        comments:[
             {
                 type:mongoose.Schema.Types.ObjectId,
                 ref:"Comment"
+            }
+        ],
+        posts:[
+            {
+                type:mongoose.Schema.Types.ObjectId,
+                ref:"Post" 
             }
         ],
         token:{
