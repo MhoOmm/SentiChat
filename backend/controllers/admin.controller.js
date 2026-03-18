@@ -5,6 +5,7 @@ const loginAdmin = async (req, res) => {
   // console.log("Req body:", req.body);
 
   const { username, email, password } = req.body;
+  console.log(username, email, password)
 
   if (!username || !email || !password) {
     return res.json({
