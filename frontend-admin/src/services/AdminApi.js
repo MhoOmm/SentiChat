@@ -30,6 +30,22 @@ export const createAnnouncement = (data, token) => {
   });
 };
 
+export const createPoll = (data, token) => {
+  return axios.post(`${API}/polls/create`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+};
+
+export const getPolls = (token) => {
+  return axios.get(`${API}/polls/all`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+};
+
 export const getSentiment = (token) => {
   return axios.get(`${API}/sentiment/stats`, { 
     headers: { 
