@@ -1,11 +1,54 @@
 import { useEffect, useState } from "react";
 import { getSentiment } from "../src/services/AdminApi";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import AdminNavbar from "../components/AdminNavbar/AdminNavbar";
+
+const pageStyle = {
+  minHeight: "100vh",
+  background: "linear-gradient(135deg, #f0f4ff 0%, #ffffff 50%, #e8f0fe 100%)",
+  fontFamily: "'Arial', sans-serif",
+};
+
+const cardBase = {
+  background:
+    "radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 70%), white",
+  borderRadius: 16,
+  border: "1.5px solid #e0e7ff",
+  boxShadow: "0 2px 24px rgba(30,64,175,0.07)",
+};
+
+const sentimentConfig = [
+  {
+    key: "positive",
+    label: "Positive",
+    icon: "😊",
+    color: "#10b981",
+    bg: "#ecfdf5",
+    border: "#a7f3d0",
+    bar: "#10b981",
+  },
+  {
+    key: "negative",
+    label: "Negative",
+    icon: "😟",
+    color: "#ef4444",
+    bg: "#fef2f2",
+    border: "#fecaca",
+    bar: "#ef4444",
+  },
+  {
+    key: "neutral",
+    label: "Neutral",
+    icon: "😐",
+    color: "#64748b",
+    bg: "#f8fafc",
+    border: "#e2e8f0",
+    bar: "#94a3b8",
+  },
+];
 
 export default function SentimentAnalysis() {
   const [stats, setStats] = useState(null);
-
   const token = localStorage.getItem("adminToken");
   const navigate = useNavigate();
 
@@ -15,144 +58,265 @@ export default function SentimentAnalysis() {
     });
   }, []);
 
-
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
     navigate("/admin/login-admin");
   };
 
+  if (!stats)
+    return (
+      <div style={pageStyle}>
+        <AdminNavbar admin={null} onLogout={handleLogout} />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "60vh",
+            gap: 16,
+          }}
+        >
+          <div
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: "50%",
+              border: "4px solid #e0e7ff",
+              borderTop: "4px solid #3b82f6",
+              animation: "spin 0.9s linear infinite",
+            }}
+          />
+          <span
+            style={{
+              color: "#64748b",
+              fontFamily: "'Arial', sans-serif",
+              fontSize: 15,
+            }}
+          >
+            Loading sentiment data…
+          </span>
+          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      </div>
+    );
 
-  if (!stats) return <p className="p-6">Loading...</p>;
-
+  const total =
+    (stats.positive || 0) + (stats.negative || 0) + (stats.neutral || 0);
 
   return (
-  <div className="min-h-screen bg-brand text-white font-sans">
+    <div style={pageStyle}>
+      <AdminNavbar admin={null} onLogout={handleLogout} />
 
-    {/* ══════════ HEADER ══════════ */}
-    <header className="sticky top-0 z-40 bg-brand/95 border-b border-white/10 shadow-lg px-4 md:px-6 lg:px-10 py-4">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-
-        {/* LEFT */}
-        <h1 className="text-xl md:text-2xl font-bold text-white">
-          SentiChat
-        </h1>
-
-        {/* CENTER NAV */}
-        <nav className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
-          <Link
-            to="/admin/dashboard"
-            className="px-4 py-2.5 font-medium text-sm rounded-lg text-white/70 hover:bg-white/10 hover:text-white transition"
+      <main
+        style={{
+          maxWidth: 960,
+          margin: "0 auto",
+          padding: "40px 24px",
+        }}
+      >
+        {/* PAGE HEADER */}
+        <div style={{ marginBottom: 32 }}>
+          <h2
+            style={{
+              fontFamily: "'Arial', sans-serif",
+              fontWeight: 800,
+              fontSize: 28,
+              color: "#1e3a8a",
+              margin: 0,
+              letterSpacing: "-0.5px",
+            }}
           >
-            Dashboard
-          </Link>
-
-          <Link
-            to="/admin/announcements"
-            className="px-4 py-2.5 font-medium text-sm rounded-lg text-white/70 hover:bg-white/10 hover:text-white transition"
+            Sentiment Analysis
+          </h2>
+          <p
+            style={{
+              fontFamily: "'Arial', sans-serif",
+              fontSize: 14,
+              color: "#94a3b8",
+              marginTop: 4,
+            }}
           >
-            Announcements & Polls
-          </Link>
-
-          <Link
-            to="/admin/sentiments"
-            className="px-4 py-2.5 font-medium text-sm rounded-lg bg-blue-300 text-brand font-medium"
-          >
-            Sentiments
-          </Link>
-        </nav>
-
-        {/* RIGHT */}
-        <button
-          onClick={handleLogout}
-          className="px-4 py-2 rounded-lg bg-blue-300 text-brand font-semibold hover:opacity-90 hover:cursor-pointer transition"
-        >
-          Logout
-        </button>
-
-      </div>
-    </header>
-
-    {/* ══════════ CONTENT ══════════ */}
-    {!stats ? (
-      <p className="p-6 text-white/70">Loading...</p>
-    ) : (
-      <main className="p-6 md:p-8 max-w-5xl mx-auto">
-
-        <h2 className="text-2xl font-bold mb-8">
-          Sentiment Analysis
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-          {/* POSITIVE */}
-          <div className="bg-white/10 backdrop-blur p-6 rounded-xl border border-white/10 text-center hover:scale-[1.02] transition">
-            <h3 className="font-semibold text-lg text-white/80 mb-2">
-              Positive
-            </h3>
-            <p className="text-3xl font-bold text-green-400">
-              {stats.positive}%
-            </p>
-          </div>
-
-          {/* NEGATIVE */}
-          <div className="bg-white/10 backdrop-blur p-6 rounded-xl border border-white/10 text-center hover:scale-[1.02] transition">
-            <h3 className="font-semibold text-lg text-white/80 mb-2">
-              Negative
-            </h3>
-            <p className="text-3xl font-bold text-red-400">
-              {stats.negative}%
-            </p>
-          </div>
-
-          {/* NEUTRAL */}
-          <div className="bg-white/10 backdrop-blur p-6 rounded-xl border border-white/10 text-center hover:scale-[1.02] transition">
-            <h3 className="font-semibold text-lg text-white/80 mb-2">
-              Neutral
-            </h3>
-            <p className="text-3xl font-bold text-gray-300">
-              {stats.neutral}%
-            </p>
-          </div>
-
+            Overview of user sentiment from chat interactions.
+          </p>
         </div>
 
+        {/* STAT CARDS */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: 20,
+            marginBottom: 32,
+          }}
+        >
+          {sentimentConfig.map((s) => (
+            <div
+              key={s.key}
+              style={{
+                ...cardBase,
+                padding: "26px 24px",
+                borderLeft: `4px solid ${s.color}`,
+                transition: "transform 0.18s, box-shadow 0.18s",
+                cursor: "default",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-3px)";
+                e.currentTarget.style.boxShadow =
+                  "0 8px 32px rgba(30,64,175,0.12)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow =
+                  "0 2px 24px rgba(30,64,175,0.07)";
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: 14,
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "'Arial', sans-serif",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: "#64748b",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  {s.label}
+                </span>
+                <div
+                  style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: 10,
+                    background: s.bg,
+                    border: `1px solid ${s.border}`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 18,
+                  }}
+                >
+                  {s.icon}
+                </div>
+              </div>
+
+              <div
+                style={{
+                  fontFamily: "'Arial', sans-serif",
+                  fontSize: 38,
+                  fontWeight: 800,
+                  color: s.color,
+                  lineHeight: 1,
+                  marginBottom: 14,
+                }}
+              >
+                {stats[s.key]}%
+              </div>
+
+              {/* PROGRESS BAR */}
+              <div
+                style={{
+                  height: 6,
+                  borderRadius: 4,
+                  background: "#f0f4ff",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    height: "100%",
+                    width: `${stats[s.key]}%`,
+                    background: s.bar,
+                    borderRadius: 4,
+                    transition: "width 0.8s ease",
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* DISTRIBUTION CHART CARD */}
+        <div style={{ ...cardBase, padding: "28px 32px" }}>
+          <h3
+            style={{
+              fontFamily: "'Arial', sans-serif",
+              fontWeight: 700,
+              fontSize: 16,
+              color: "#1e3a8a",
+              margin: "0 0 22px",
+            }}
+          >
+            Sentiment Distribution
+          </h3>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {sentimentConfig.map((s) => (
+              <div
+                key={s.key}
+                style={{ display: "flex", alignItems: "center", gap: 14 }}
+              >
+                <div
+                  style={{
+                    width: 90,
+                    fontFamily: "'Arial', sans-serif",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "#475569",
+                    flexShrink: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                  }}
+                >
+                  <span>{s.icon}</span>
+                  {s.label}
+                </div>
+                <div
+                  style={{
+                    flex: 1,
+                    height: 10,
+                    borderRadius: 6,
+                    background: "#f0f4ff",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "100%",
+                      width: `${stats[s.key]}%`,
+                      background: `linear-gradient(90deg, ${s.color}99, ${s.color})`,
+                      borderRadius: 6,
+                      transition: "width 1s ease",
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    width: 44,
+                    textAlign: "right",
+                    fontFamily: "'Arial', sans-serif",
+                    fontWeight: 700,
+                    fontSize: 13,
+                    color: s.color,
+                    flexShrink: 0,
+                  }}
+                >
+                  {stats[s.key]}%
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </main>
-    )}
-  </div>
-);
-
-
-
-
-  // DRAFT 1 - WORKING BASE
-  // return (
-  //   <div className="p-6">
-
-  //     <h2 className="text-2xl font-bold mb-6">
-  //       Sentiment Analysis
-  //     </h2>
-
-  //     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-  //       <div className="bg-green-100 p-6 rounded text-center">
-  //         <h3 className="font-bold text-lg">Positive</h3>
-  //         <p className="text-2xl">{stats.positive}%</p>
-  //       </div>
-
-  //       <div className="bg-red-100 p-6 rounded text-center">
-  //         <h3 className="font-bold text-lg">Negative</h3>
-  //         <p className="text-2xl">{stats.negative}%</p>
-  //       </div>
-
-  //       <div className="bg-gray-200 p-6 rounded text-center">
-  //         <h3 className="font-bold text-lg">Neutral</h3>
-  //         <p className="text-2xl">{stats.neutral}%</p>
-  //       </div>
-
-  //     </div>
-
-  //   </div>
-  // );
-
-
+    </div>
+  );
 }
