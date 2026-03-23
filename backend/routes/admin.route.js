@@ -17,7 +17,7 @@ router.get("/dashboard", adminAuth, (req, res) => {
 }); 
 router.post("/logout-admin", adminAuth, logoutAdmin);
 
-router.post("/announcements/create", createAnnouncement);
+router.post("/announcements/create",adminAuth, createAnnouncement);
 router.get("/announcements/all", getAnnouncements);
 router.get("/sentiment/stats", getSentimentStats);
 
