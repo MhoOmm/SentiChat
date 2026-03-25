@@ -1,6 +1,12 @@
 const mongoose  = require("mongoose")
 
 const postSchema = new mongoose.Schema({
+    title:{
+        type:String,
+        required:true,
+        trim:true,
+        maxlength:300
+    },
     text:{
         type:String,
         require:true,
@@ -27,7 +33,17 @@ const postSchema = new mongoose.Schema({
         confidence:{
             type:Number
         }
-    }
+    },
+
+    upvotes:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    }],
+
+    downvotes:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    }]
 
 },{timestamps:true})
 

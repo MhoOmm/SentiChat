@@ -1,21 +1,26 @@
 const express = require("express")
 const router = express.Router()
 
-const {auth} = require("../middleware/userMiddleware")
+const { auth } = require("../middleware/userMiddleware")
 
-const {createComment , getPostComments} = require("../controllers/commentController")
-const {createPost} = require("../controllers/postController")
-const {createGreivance} = require("../controllers/greivanceController")
-
-
-// Post related Controllers
-router.post("/post",auth,createPost)
-router.post("/create-comment", auth, createComment);
-router.get("/get-comments", getPostComments);
+const { createComment, getPostComments, voteComment } = require("../controllers/commentController")
+const { createPost, getPosts, getPost, votePost } = require("../controllers/postController")
+const { createGreivance } = require("../controllers/greivanceController")
 
 
-// Grievance 
-router.post("/create-greivance",auth,createGreivance)
+// ── Posts ──────────────────────────────────────────────────────────────────
+router.post("/post", auth, createPost)
+router.get("/posts", getPosts)
+router.get("/post/:postId", getPost)
+router.post("/post/vote", auth, votePost)
+
+// ── Comments ───────────────────────────────────────────────────────────────
+router.post("/create-comment", auth, createComment)
+router.get("/get-comments", getPostComments)          // uses ?postId=  query param
+router.post("/comment/vote", auth, voteComment)
+
+// ── Grievance ─────────────────────────────────────────────────────────────
+router.post("/create-greivance", auth, createGreivance)
 
 
 module.exports = router
