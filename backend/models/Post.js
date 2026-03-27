@@ -1,12 +1,6 @@
 const mongoose  = require("mongoose")
 
 const postSchema = new mongoose.Schema({
-    title:{
-        type:String,
-        required:true,
-        trim:true,
-        maxlength:300
-    },
     text:{
         type:String,
         require:true,
@@ -35,15 +29,12 @@ const postSchema = new mongoose.Schema({
         }
     },
 
-    upvotes:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
+    votes:[{
+        user: { type:mongoose.Schema.Types.ObjectId, ref:"User" },
+        value: { type: Number, enum: [1, -1] }
     }],
-
-    downvotes:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
-    }]
+    upvotes:{ type: Number, default: 0 },
+    downvotes:{ type: Number, default: 0 },
 
 },{timestamps:true})
 

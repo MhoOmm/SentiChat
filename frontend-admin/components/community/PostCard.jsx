@@ -15,12 +15,16 @@ export default function PostCard({ post }) {
     >
       {/* Top meta */}
       <div className="flex items-center gap-2 mb-3">
-        {/* Avatar circle */}
-        <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-          <span className="text-[11px] font-semibold text-white/70 uppercase">
-            {author[0]}
-          </span>
-        </div>
+        {/* Avatar */}
+        {post.user?.avatar ? (
+          <img src={post.user.avatar} alt={author} className="w-7 h-7 rounded-full object-cover shrink-0" />
+        ) : (
+          <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+            <span className="text-[11px] font-semibold text-white/70 uppercase">
+              {author[0]}
+            </span>
+          </div>
+        )}
         <span className="text-xs text-white/40 font-medium">
           <span className="text-white/60">u/{author}</span>
           <span className="mx-1">·</span>
@@ -28,12 +32,7 @@ export default function PostCard({ post }) {
         </span>
       </div>
 
-      {/* Title */}
       <Link to={`/community/post/${post._id}`} className="block">
-        <h2 className="text-white font-semibold text-base leading-snug mb-2
-                       group-hover:text-white/90 transition-colors">
-          {post.title}
-        </h2>
         {/* Body preview */}
         <p className="text-white/50 text-sm leading-relaxed line-clamp-3">
           {post.text}
@@ -59,20 +58,6 @@ export default function PostCard({ post }) {
           </svg>
           Comments
         </Link>
-
-        {/* Sentiment pill */}
-        {post.sentiment?.label && (
-          <span className={`ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full border
-            ${post.sentiment.label === "positive"
-              ? "border-green-500/30 text-green-400 bg-green-500/10"
-              : post.sentiment.label === "negative"
-                ? "border-red-500/30 text-red-400 bg-red-500/10"
-                : "border-white/10 text-white/30 bg-white/5"
-            }`}
-          >
-            {post.sentiment.label}
-          </span>
-        )}
       </div>
     </article>
   );

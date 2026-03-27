@@ -2,27 +2,34 @@ import axios from "axios";
 
 const API = "http://localhost:5000/api/chat";
 
-const withCreds = { withCredentials: true };
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
+};
 
 // ── Posts ──────────────────────────────────────────────────────────────
 export const getPosts = () =>
-  axios.get(`${API}/posts`, withCreds);
+  axios.get(`${API}/posts`);
 
 export const getPost = (postId) =>
-  axios.get(`${API}/post/${postId}`, withCreds);
+  axios.get(`${API}/post/${postId}`);
 
 export const createPost = (data) =>
-  axios.post(`${API}/post`, data, withCreds);
+  axios.post(`${API}/post`, data, getAuthHeaders());
 
-export const votePost = (postId, type) =>
-  axios.post(`${API}/post/vote`, { postId, type }, withCreds);
+export const votePost = (postId, value) =>
+  axios.post(`${API}/post/vote`, { postId, value }, getAuthHeaders());
 
 // ── Comments ───────────────────────────────────────────────────────────
 export const getComments = (postId) =>
-  axios.get(`${API}/get-comments`, { params: { postId }, ...withCreds });
+  axios.get(`${API}/get-comments`, { params: { postId } });
 
 export const createComment = (data) =>
-  axios.post(`${API}/create-comment`, data, withCreds);
+  axios.post(`${API}/create-comment`, data, getAuthHeaders());
 
-export const voteComment = (commentId, type) =>
-  axios.post(`${API}/comment/vote`, { commentId, type }, withCreds);
+export const voteComment = (commentId, value) =>
+  axios.post(`${API}/comment/vote`, { commentId, value }, getAuthHeaders());

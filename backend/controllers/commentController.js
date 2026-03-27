@@ -21,8 +21,8 @@ exports.createComment = async (req, res) => {
         let hate = { label: "non-hate", confidence: 0 };
 
         try {
-            const hateResult = await axios.post('http://127.0.0.1:10000/predict/hate', { text })
-            const SentimentResult = await axios.post('http://127.0.0.1:10000/predict/sentiment', { text })
+            const hateResult = await axios.post('http://127.0.0.1:8000/predict/hate', { text })
+            const SentimentResult = await axios.post('http://127.0.0.1:8000/predict/sentiment', { text })
             sentiment = { label: SentimentResult.data.prediction, confidence: SentimentResult.data.confidence }
             hate = { label: hateResult.data.prediction, confidence: hateResult.data.confidence }
         } catch (mlErr) {
@@ -87,49 +87,68 @@ exports.getPostComments = async (req, res) => {
 }
 
 
-// vote on a comment (type = "up" | "down")
+// vote on a comment
 exports.voteComment = async (req, res) => {
     try {
-        const { commentId, type } = req.body;
+        const { commentId, value } = req.body;
         const userId = req.user.id;
 
-        if (!commentId || !type) {
-            return res.status(400).json({ success: false, message: "commentId and type required" })
+        const voteValue = Number(value);
+
+        if (!commentId || Number.isNaN(voteValue) || ![1, -1].includes(voteValue)) {
+            return res.status(400).json({
+                success: false,
+                message: "commentId and value (1 or -1) are required"
+            });
         }
 
-        const comment = await Comment.findById(commentId);
-        if (!comment) return res.status(404).json({ success: false, message: "Comment not found" })
+        const comment = await Comment.findById(commentId).populate('user');
+        if (!comment) {
+            return res.status(404).json({ success: false, message: "comment not found" });
+        }
 
-        const hasUpvoted   = comment.upvotes.includes(userId);
-        const hasDownvoted = comment.downvotes.includes(userId);
+        if (comment.user._id.toString() === userId) {
+            return res.status(400).json({ success: false, message: "cannot vote on your own comment" });
+        }
 
-        if (type === "up") {
-            if (hasUpvoted) {
-                comment.upvotes.pull(userId);
+        const existingVote = comment.votes.find(vote => vote.user.toString() === userId);
+
+        if (existingVote) {
+            if (existingVote.value === voteValue) {
+                if (existingVote.value === 1) {
+                    comment.upvotes -= 1;
+                } else {
+                    comment.downvotes -= 1;
+                }
+                comment.votes = comment.votes.filter(v => v.user.toString() !== userId);
             } else {
-                comment.upvotes.push(userId);
-                if (hasDownvoted) comment.downvotes.pull(userId);
-            }
-        } else if (type === "down") {
-            if (hasDownvoted) {
-                comment.downvotes.pull(userId);
-            } else {
-                comment.downvotes.push(userId);
-                if (hasUpvoted) comment.upvotes.pull(userId);
+                if (existingVote.value === 1) {
+                    comment.upvotes -= 1;
+                } else {
+                    comment.downvotes -= 1;
+                }
+
+                if (voteValue === 1) {
+                    comment.upvotes += 1;
+                } else {
+                    comment.downvotes += 1;
+                }
+                existingVote.value = voteValue;
             }
         } else {
-            return res.status(400).json({ success: false, message: "type must be 'up' or 'down'" })
+            comment.votes.push({ user: userId, value: voteValue });
+            if (voteValue === 1) {
+                comment.upvotes += 1;
+            } else {
+                comment.downvotes += 1;
+            }
         }
 
         await comment.save();
 
-        return res.status(200).json({
-            success: true,
-            upvotes: comment.upvotes.length,
-            downvotes: comment.downvotes.length
-        })
+        return res.status(200).json({ success: true, comment });
     } catch (error) {
-        console.log(error.message)
-        return res.status(500).json({ success: false, message: "Unable to vote" })
+        console.log(error.message);
+        return res.status(500).json({ success: false, message: "unable to vote" });
     }
 }

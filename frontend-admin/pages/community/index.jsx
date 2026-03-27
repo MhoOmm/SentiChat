@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { getPosts, createPost } from "../../src/services/communityApi";
 import PostCard from "../../components/community/PostCard";
 
@@ -6,10 +7,11 @@ export default function CommunityPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPosts();
@@ -28,19 +30,24 @@ export default function CommunityPage() {
   };
 
   const handleCreate = async () => {
-    if (!title.trim() || !text.trim()) return;
+    if (!text.trim()) return;
     setSubmitting(true);
     try {
-      const { data } = await createPost({ title, text });
+      const { data } = await createPost({ text });
       if (data.success) {
         setPosts(prev => [data.post, ...prev]);
-        setTitle(""); setText(""); setShowForm(false);
+        setText(""); setShowForm(false);
       }
     } catch {
       alert("Unable to post — are you logged in?");
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/auth");
   };
 
   return (
@@ -54,19 +61,36 @@ export default function CommunityPage() {
             <span className="w-2 h-2 rounded-full bg-white inline-block" />
             <span className="font-bold text-sm tracking-wide">SentiChat Community</span>
           </div>
-          <button
-            id="open-create-post"
-            onClick={() => setShowForm(s => !s)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/20
-                       text-xs font-semibold hover:bg-white hover:text-[#04052e]
-                       transition-all duration-200"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none"
-              viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-            </svg>
-            New Post
-          </button>
+
+          <div className="flex items-center gap-3">
+            <Link
+              to="/community/dashboard"
+              className="text-xs font-semibold text-white/50 hover:text-white transition-colors"
+            >
+              Dashboard
+            </Link>
+
+            <button
+              id="open-create-post"
+              onClick={() => setShowForm(s => !s)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/20
+                         text-xs font-semibold hover:bg-white hover:text-[#04052e]
+                         transition-all duration-200"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              New Post
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className="text-xs font-semibold text-red-400 hover:text-red-300 transition-colors ml-1 border pl-3 border-l-white/10 border-y-transparent border-r-transparent py-1"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </header>
 
@@ -77,17 +101,6 @@ export default function CommunityPage() {
           <div className="bg-white/[0.04] border border-white/[0.10] rounded-2xl p-5 space-y-3
                           animate-[fadeIn_0.15s_ease]">
             <h2 className="text-sm font-semibold text-white/80">Create a post</h2>
-            <input
-              id="post-title-input"
-              type="text"
-              value={title}
-              maxLength={300}
-              onChange={e => setTitle(e.target.value)}
-              placeholder="Title"
-              className="w-full bg-white/[0.04] border border-white/[0.08] focus:border-white/30
-                         rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30
-                         outline-none transition-colors"
-            />
             <textarea
               id="post-body-input"
               rows={4}
@@ -100,13 +113,13 @@ export default function CommunityPage() {
             />
             <div className="flex gap-2 justify-end">
               <button
-                onClick={() => { setShowForm(false); setTitle(""); setText(""); }}
+                onClick={() => { setShowForm(false); setText(""); }}
                 className="px-4 py-2 text-xs text-white/40 hover:text-white/70 transition-colors"
               >Cancel</button>
               <button
                 id="post-submit"
                 onClick={handleCreate}
-                disabled={submitting || !title.trim() || !text.trim()}
+                disabled={submitting || !text.trim()}
                 className="px-6 py-2 bg-white text-[#04052e] text-xs font-bold rounded-xl
                            hover:bg-white/90 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               >

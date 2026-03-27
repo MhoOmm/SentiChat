@@ -4,59 +4,66 @@ const axios = require("axios")
 
 
 // create post
-exports.createPost = async (req, res) => {
+exports.createPost = async(req,res)=>{
     try {
-        const { text, title } = req.body;
+        
+        const { text } = req.body;
         const userId = req.user.id
 
-        if (!text || !title) {
+        if(!text){
             return res.status(400).json({
-                success: false,
-                message: "Title and text are required"
+                success:false,
+                message:"input all feilds"
             })
         }
 
-        if (!userId) {
+        if(!userId){
             return res.status(400).json({
-                success: false,
-                message: "Login first"
+                success:false,
+                message:"failed to fetch userId OR login first"
             })
         }
 
-        let sentiment = { label: "neutral", confidence: 0 };
-        let hate = { label: "non-hate", confidence: 0 };
+        const hateResult = await axios.post(
+            'http://127.0.0.1:8000/predict/hate',
+            {text}
+        )
 
-        try {
-            const hateResult = await axios.post('http://127.0.0.1:10000/predict/hate', { text })
-            const SentimentResult = await axios.post('http://127.0.0.1:10000/predict/sentiment', { text })
-            sentiment = { label: SentimentResult.data.prediction, confidence: SentimentResult.data.confidence }
-            hate = { label: hateResult.data.prediction, confidence: hateResult.data.confidence }
-        } catch (mlErr) {
-            console.log("ML service unavailable, skipping analysis:", mlErr.message)
+        const SentimentResult = await axios.post(
+            'http://127.0.0.1:8000/predict/sentiment',
+            {text}
+        )
+
+        const sentiment = {
+            label : SentimentResult.data.prediction,
+            confidence : SentimentResult.data.confidence
+        }
+        const hate = {
+            label : hateResult.data.prediction,
+            confidence : hateResult.data.confidence
         }
 
-        const post = await Post.create({
+        const post  = await Post.create({
             text,
-            title,
-            user: userId,
-            sentiment,
-            hate
+            user:userId,
+            sentiment:sentiment,
+            hate:hate
         })
 
-        await User.findByIdAndUpdate(userId, { $push: { posts: post._id } })
+        await User.findByIdAndUpdate(userId,{$push:{posts:post._id}})
 
         return res.status(200).json({
-            success: true,
+            success:true,
             post,
-            message: "Post created successfully"
+            message:"post created success"
         })
 
     } catch (error) {
         console.log(error.message)
         return res.status(500).json({
-            success: false,
+            success:false,
             error,
-            message: "Unable to create post"
+            message:"unable to create post"
         })
     }
 }
@@ -96,52 +103,70 @@ exports.getPost = async (req, res) => {
 }
 
 
-// vote on a post  (type = "up" | "down")
+// vote on a post
 exports.votePost = async (req, res) => {
     try {
-        const { postId, type } = req.body;
+        const { postId, value } = req.body;
         const userId = req.user.id;
 
-        if (!postId || !type) {
-            return res.status(400).json({ success: false, message: "postId and type required" })
+        const voteValue = Number(value);
+
+        if (!postId || Number.isNaN(voteValue) || ![1, -1].includes(voteValue)) {
+            return res.status(400).json({
+                success: false,
+                message: "postId and value (1 or -1) are required"
+            });
         }
 
-        const post = await Post.findById(postId);
-        if (!post) return res.status(404).json({ success: false, message: "Post not found" })
+        const post = await Post.findById(postId).populate('user');
+        if (!post) {
+            return res.status(404).json({ success: false, message: "post not found" });
+        }
 
-        const hasUpvoted   = post.upvotes.includes(userId);
-        const hasDownvoted = post.downvotes.includes(userId);
+        // Cannot vote on your own post
+        if (post.user._id.toString() === userId) {
+            return res.status(400).json({ success: false, message: "cannot vote on your own post" });
+        }
 
-        if (type === "up") {
-            if (hasUpvoted) {
-                // toggle off
-                post.upvotes.pull(userId);
+        const existingVote = post.votes.find(vote => vote.user.toString() === userId);
+
+        if (existingVote) {
+            if (existingVote.value === voteValue) {
+                if (existingVote.value === 1) {
+                    post.upvotes -= 1;
+                } else {
+                    post.downvotes -= 1;
+                }
+                post.votes = post.votes.filter(v => v.user.toString() !== userId);
             } else {
-                post.upvotes.push(userId);
-                if (hasDownvoted) post.downvotes.pull(userId);
-            }
-        } else if (type === "down") {
-            if (hasDownvoted) {
-                // toggle off
-                post.downvotes.pull(userId);
-            } else {
-                post.downvotes.push(userId);
-                if (hasUpvoted) post.upvotes.pull(userId);
+                if (existingVote.value === 1) {
+                    post.upvotes -= 1;
+                } else {
+                    post.downvotes -= 1;
+                }
+
+                if (voteValue === 1) {
+                    post.upvotes += 1;
+                } else {
+                    post.downvotes += 1;
+                }
+                existingVote.value = voteValue;
             }
         } else {
-            return res.status(400).json({ success: false, message: "type must be 'up' or 'down'" })
+            post.votes.push({ user: userId, value: voteValue });
+            if (voteValue === 1) {
+                post.upvotes += 1;
+            } else {
+                post.downvotes += 1;
+            }
         }
 
         await post.save();
+        await post.populate('user', 'userName avatar');
 
-        return res.status(200).json({
-            success: true,
-            upvotes: post.upvotes.length,
-            downvotes: post.downvotes.length,
-            message: "Vote registered"
-        })
+        return res.status(200).json({ success: true, post });
     } catch (error) {
-        console.log(error.message)
-        return res.status(500).json({ success: false, message: "Unable to vote" })
+        console.log(error.message);
+        return res.status(500).json({ success: false, message: "unable to vote" });
     }
 }

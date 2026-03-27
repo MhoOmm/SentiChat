@@ -36,8 +36,10 @@ export default function VoteButtons({ targetId, type, initialUp = 0, initialDown
     setVoted(wasVoted ? null : dir);
 
     try {
+      const voteValue = dir === "up" ? 1 : -1;
       const fn = type === "post" ? votePost : voteComment;
-      await fn(targetId, dir);
+      const res = await fn(targetId, voteValue);
+      if (!res.data.success) throw new Error("Vote failed");
     } catch {
       // rollback
       setUp(prevUp); setDown(prevDown); setVoted(prevVoted);

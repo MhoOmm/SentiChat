@@ -43,9 +43,13 @@ export default function CommentItem({ comment, postId, depth = 0 }) {
       <div className={`border-l-2 pl-4 ${borderColor}`}>
         {/* Header */}
         <div className="flex items-center gap-2 mb-1.5">
-          <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-            <span className="text-[9px] font-bold text-white/60 uppercase">{author[0]}</span>
-          </div>
+          {comment.user?.avatar ? (
+            <img src={comment.user.avatar} alt={author} className="w-5 h-5 rounded-full object-cover shrink-0" />
+          ) : (
+            <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+              <span className="text-[9px] font-bold text-white/60 uppercase">{author[0]}</span>
+            </div>
+          )}
           <span className="text-xs text-white/60 font-medium">u/{author}</span>
           <span className="text-white/20 text-xs">{age}</span>
 
@@ -78,19 +82,6 @@ export default function CommentItem({ comment, postId, depth = 0 }) {
           >
             Reply
           </button>
-
-          {/* Sentiment badge */}
-          {comment.sentiment?.label && (
-            <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded border
-              ${comment.sentiment.label === "positive"
-                ? "border-green-500/30 text-green-400"
-                : comment.sentiment.label === "negative"
-                  ? "border-red-500/30 text-red-400"
-                  : "border-white/10 text-white/20"}`}
-            >
-              {comment.sentiment.label}
-            </span>
-          )}
         </div>
 
         {/* Reply box */}

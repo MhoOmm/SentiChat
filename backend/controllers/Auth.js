@@ -7,7 +7,6 @@ const mailSender = require("../utils/mailSender")
 
 exports.signup = async(req,res)=>{
     try {
-        
         const{
             userName,
             email,
@@ -91,12 +90,6 @@ exports.signup = async(req,res)=>{
         })
     }
 }
-
-
-
-
-
-
 exports.verifyOTP =  async(req,res) =>{
     try {
         
