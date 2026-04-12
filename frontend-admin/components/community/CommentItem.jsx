@@ -72,8 +72,18 @@ export default function CommentItem({ comment, postId, depth = 0 }) {
           <VoteButtons
             targetId={comment._id}
             type="comment"
-            initialUp={comment.upvotes?.length ?? 0}
-            initialDown={comment.downvotes?.length ?? 0}
+            initialUp={comment.upvotes || 0}
+            initialDown={comment.downvotes || 0}
+            userVote={(() => {
+              try {
+                const token = localStorage.getItem("token");
+                if (!token) return null;
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const me = payload.id;
+                const vote = comment.votes?.find(v => v.user === me || (v.user && v.user._id === me));
+                return vote ? (vote.value === 1 ? "up" : "down") : null;
+              } catch { return null; }
+            })()}
           />
           <button
             id={`reply-btn-${comment._id}`}

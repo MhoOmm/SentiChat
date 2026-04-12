@@ -4,7 +4,7 @@ const router = express.Router()
 const { auth } = require("../middleware/userMiddleware")
 
 const { createComment, getPostComments, voteComment } = require("../controllers/commentController")
-const { createPost, getPosts, getPost, votePost } = require("../controllers/postController")
+const { createPost, getPosts, getPost, votePost, getUserProfile } = require("../controllers/postController")
 const { createGreivance } = require("../controllers/greivanceController")
 
 
@@ -13,6 +13,7 @@ router.post("/post", auth, createPost)
 router.get("/posts", getPosts)
 router.get("/post/:postId", getPost)
 router.post("/post/vote", auth, votePost)
+router.get("/profile", auth, getUserProfile)
 
 // ── Comments ───────────────────────────────────────────────────────────────
 router.post("/create-comment", auth, createComment)

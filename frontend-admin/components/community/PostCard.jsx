@@ -44,8 +44,18 @@ export default function PostCard({ post }) {
         <VoteButtons
           targetId={post._id}
           type="post"
-          initialUp={post.upvotes?.length ?? 0}
-          initialDown={post.downvotes?.length ?? 0}
+          initialUp={post.upvotes || 0}
+          initialDown={post.downvotes || 0}
+          userVote={(() => {
+            try {
+              const token = localStorage.getItem("token");
+              if (!token) return null;
+              const payload = JSON.parse(atob(token.split('.')[1]));
+              const me = payload.id;
+              const vote = post.votes?.find(v => v.user === me || (v.user && v.user._id === me));
+              return vote ? (vote.value === 1 ? "up" : "down") : null;
+            } catch { return null; }
+          })()}
         />
 
         <Link

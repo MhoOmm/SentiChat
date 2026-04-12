@@ -170,3 +170,38 @@ exports.votePost = async (req, res) => {
         return res.status(500).json({ success: false, message: "unable to vote" });
     }
 }
+
+// get user profile (with their posts, comments, and liked posts)
+exports.getUserProfile = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId)
+            .select("-password -token -otp")
+            .populate({
+                path: "posts",
+                options: { sort: { createdAt: -1 } },
+                populate: { path: "user", select: "userName avatar" }
+            })
+            .populate({
+                path: "comments",
+                options: { sort: { createdAt: -1 } },
+                populate: { path: "user", select: "userName avatar" }
+            });
+
+        if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+        const likedPosts = await Post.find({
+            "votes.user": userId,
+            "votes.value": 1
+        }).populate("user", "userName avatar").sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            user,
+            likedPosts
+        });
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ success: false, message: "unable to fetch profile" });
+    }
+}

@@ -18,6 +18,9 @@ export const getPosts = () =>
 export const getPost = (postId) =>
   axios.get(`${API}/post/${postId}`);
 
+export const getProfile = () =>
+  axios.get(`${API}/profile`, getAuthHeaders());
+
 export const createPost = (data) =>
   axios.post(`${API}/post`, data, getAuthHeaders());
 
