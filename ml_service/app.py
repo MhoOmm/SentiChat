@@ -114,6 +114,7 @@ def predict_hate(data: TextRequest):
 
 # -------- Root Endpoint --------
 
+# uvicorn app:app --reload --port 10000
 @app.get("/")
 def home():
     return {

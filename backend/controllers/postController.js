@@ -25,12 +25,12 @@ exports.createPost = async(req,res)=>{
         }
 
         const hateResult = await axios.post(
-            'http://127.0.0.1:8000/predict/hate',
+            'http://127.0.0.1:10000/predict/hate',
             {text}
         )
 
         const SentimentResult = await axios.post(
-            'http://127.0.0.1:8000/predict/sentiment',
+            'http://127.0.0.1:10000/predict/sentiment',
             {text}
         )
 
