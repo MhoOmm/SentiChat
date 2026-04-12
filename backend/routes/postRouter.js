@@ -5,7 +5,7 @@ const { auth } = require("../middleware/userMiddleware")
 
 const { createComment, getPostComments, voteComment } = require("../controllers/commentController")
 const { createPost, getPosts, getPost, votePost, getUserProfile } = require("../controllers/postController")
-const { createGreivance } = require("../controllers/greivanceController")
+const { createGrievance } = require("../controllers/grievanceController")
 
 
 // ── Posts ──────────────────────────────────────────────────────────────────
@@ -21,7 +21,7 @@ router.get("/get-comments", getPostComments)          // uses ?postId=  query pa
 router.post("/comment/vote", auth, voteComment)
 
 // ── Grievance ─────────────────────────────────────────────────────────────
-router.post("/create-greivance", auth, createGreivance)
+router.post("/create-grievance", auth, createGrievance)
 
 
 module.exports = router

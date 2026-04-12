@@ -40,16 +40,18 @@ export default function AdminGrievances() {
   const fetchGrievances = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/admin/greivance", 
+        "http://localhost:5000/api/admin/grievance", 
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-
+      // haha mza
+      console.log("API:", res.data);
       setGrievances(res.data.grievances || []);
-    } catch (err) {
+    } 
+    catch (err) {
       console.error(err);
       setGrievances([]); // fallback
     } finally {
