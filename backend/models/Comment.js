@@ -39,7 +39,14 @@ const commentSchema = new mongoose.Schema({
         confidence:{
             type:Number
         }
-    }
+    },
+
+    votes:[{
+        user: { type:mongoose.Schema.Types.ObjectId, ref:"User" },
+        value: { type: Number, enum: [1, -1] }
+    }],
+    upvotes:{ type: Number, default: 0 },
+    downvotes:{ type: Number, default: 0 },
 
 }, { timestamps: true });
 
