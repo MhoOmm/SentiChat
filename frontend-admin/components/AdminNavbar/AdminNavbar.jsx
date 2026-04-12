@@ -5,6 +5,7 @@ const NAV_LINKS = [
   { label: "Dashboard",             path: "/admin/dashboard"     },
   { label: "Announcements & Polls", path: "/admin/announcements" },
   { label: "Sentiments",            path: "/admin/sentiments"    },
+  { label: "Greivances",            path: "/admin/greivances"}
 ];
 
 export default function Navbar({ onLogout }) {
