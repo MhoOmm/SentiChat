@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const {Schema} = mongoose
 
 
-const greivanceSchema = Schema({
+const grievanceSchema = Schema({
     text:{
         type:String,
         require:true,
@@ -28,5 +28,5 @@ const greivanceSchema = Schema({
     }
 },{timestamps:true})
 
- gre= mongoose.model("Greivance",greivanceSchema);
+ gre= mongoose.model("Grievance",grievanceSchema);
  module.exports = gre

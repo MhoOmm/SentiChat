@@ -6,7 +6,7 @@ const { loginAdmin, logoutAdmin } = require("../controllers/admin.controller");
 const { createAnnouncement, getAnnouncements } = require("../controllers/announcement.controller");
 const { getSentimentStats } = require("../controllers/sentiment.controller");
 const { createPoll, getPolls ,votePoll } = require("../controllers/poll.controller");
-const { getAllGreivances} = require("../controllers/greivanceController")
+const { getAllGrievances} = require("../controllers/grievanceController")
 
 router.post("/login-admin", loginAdmin);
 router.get("/dashboard", adminAuth, (req, res) => {
@@ -21,7 +21,7 @@ router.post("/logout-admin", adminAuth, logoutAdmin);
 router.post("/announcements/create",adminAuth, createAnnouncement);
 router.post("/polls/create", adminAuth,createPoll); 
 router.get("/sentiment/stats",adminAuth,getSentimentStats);
-router.get("/greivance",getAllGreivances);
+router.get("/grievance",getAllGrievances);
 
 
 module.exports = router;

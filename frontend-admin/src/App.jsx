@@ -10,7 +10,7 @@ import AnnouncementsPage from "../pages/community/Anouncements"
 import PollsPage from "../pages/community/PollsPage"
 import AdminGrievances from "../pages/AdminGrievancePage"
 
-import WriteGreivance from "../pages/community/Greivance"
+import WriteGrievance from "../pages/community/Grievance"
 import Announcements from "../pages/AdminAnnouncements";
 import SentimentAnalysis from "../pages/AdminSentimentanalysis";
 
@@ -20,7 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/auth" />} />
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/greivance" element={<WriteGreivance />} />
+        <Route path="/grievance" element={<WriteGrievance />} />
         <Route path="/admin/login-admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/community" element={<CommunityPage />} />
@@ -31,7 +31,7 @@ function App() {
 
         <Route path="/admin/announcements" element={<Announcements />} />
         <Route path="/admin/sentiments" element={<SentimentAnalysis />} />
-        <Route path="/admin/greivances" element={<AdminGrievances/>} />
+        <Route path="/admin/grievances" element={<AdminGrievances/>} />
       </Routes>
     </BrowserRouter>
   );
