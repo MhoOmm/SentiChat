@@ -47,9 +47,11 @@ export default function AdminGrievances() {
           },
         }
       );
-
+      // // haha mza
+      // console.log("API:", res.data);
       setGrievances(res.data.grievances || []);
-    } catch (err) {
+    } 
+    catch (err) {
       console.error(err);
       setGrievances([]); // fallback
     } finally {

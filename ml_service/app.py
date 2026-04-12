@@ -9,7 +9,6 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 app = FastAPI()
 
-# -------- Load GoEmotion Sentiment Model --------
 
 sentiment_model = load_model("GoEmotion/sentiment_lstm.keras")
 
@@ -23,7 +22,6 @@ with open("GoEmotion/label_map.pkl", "rb") as f:
     sentiment_label_map = pickle.load(f)
 
 
-# -------- Load HateXplain Model (KEEP COMMENTED) --------
 
 # hate_model = load_model("HateXplain/hateXplain_lstm.keras")
 
@@ -37,7 +35,6 @@ with open("GoEmotion/label_map.pkl", "rb") as f:
 #     hate_label_map = pickle.load(f)
 
 
-# -------- Load TF-IDF + PyTorch Model --------
 
 with open("HateXplain/tfidf.pkl", "rb") as f:
     tf = pickle.load(f)
@@ -63,20 +60,14 @@ rnn_model.eval()
 rnn_labels = ["hate", "offensive", "neutral"]
 
 
-# -------- Request Schema --------
-
 class TextRequest(BaseModel):
     text: str
 
-
-# -------- Health Endpoint --------
 
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
-
-# -------- Warmup Endpoint --------
 
 @app.get("/warmup")
 def warmup():
@@ -95,8 +86,6 @@ def warmup():
 
     return {"status": "models warmed"}
 
-
-# -------- Sentiment Prediction (UNCHANGED) --------
 
 @app.post("/predict/sentiment")
 def predict_sentiment(data: TextRequest):
@@ -119,7 +108,6 @@ def predict_sentiment(data: TextRequest):
     }
 
 
-# -------- Hate Speech (PyTorch TF-IDF RNN) --------
 
 @app.post("/predict/hate-rnn")
 def predict_hate_rnn(data: TextRequest):

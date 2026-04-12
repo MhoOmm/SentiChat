@@ -21,7 +21,7 @@ router.post("/logout-admin", adminAuth, logoutAdmin);
 router.post("/announcements/create",adminAuth, createAnnouncement);
 router.post("/polls/create", adminAuth,createPoll); 
 router.get("/sentiment/stats",adminAuth,getSentimentStats);
-router.get("/greivance",getAllGreivances);
+router.get("/greivance",adminAuth,getAllGreivances);
 
 
 module.exports = router;
