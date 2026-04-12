@@ -8,6 +8,7 @@ import PostDetail from "../pages/community/PostDetail";
 import UserDashboard from "../pages/community/UserDashboard";
 import AnnouncementsPage from "../pages/community/Anouncements"
 import PollsPage from "../pages/community/PollsPage"
+import AdminGrievances from "../pages/AdminGrievancePage"
 
 import WriteGreivance from "../pages/community/Greivance"
 import Announcements from "../pages/AdminAnnouncements";
@@ -30,6 +31,7 @@ function App() {
 
         <Route path="/admin/announcements" element={<Announcements />} />
         <Route path="/admin/sentiments" element={<SentimentAnalysis />} />
+        <Route path="/admin/greivances" element={<AdminGrievances/>} />
       </Routes>
     </BrowserRouter>
   );
