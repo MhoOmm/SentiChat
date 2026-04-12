@@ -50,23 +50,23 @@ exports.createGreivance = async(req,res)=>{
             })
         }
 
-        const hateResult = await axios.post(
-            'http://127.0.0.1:10000/predict/hate',
-            {text}
-        )
+        // const hateResult = await axios.post(
+        //     'http://127.0.0.1:10000/predict/hate-rnn',
+        //     {text}
+        // )
 
-        const hate = {
-            label : hateResult.data.prediction,
-            confidence : hateResult.data.confidence
-        }
+        // const hate = {
+        //     label : hateResult.data.prediction,
+        //     confidence : hateResult.data.confidence
+        // }
 
-        if(hate.label === "offensive" || hate.label === "hatespeech")
-        {
-            return res.status(400).json({
-                success:false,
-                message:"Dont spread hate,Post genuine grievance"
-            })
-        }
+        // if(hate.label === "offensive" || hate.label === "hatespeech")
+        // {
+        //     return res.status(400).json({
+        //         success:false,
+        //         message:"Dont spread hate,Post genuine grievance"
+        //     })
+        // }
 
 
         const greivance  = await Greivance.create({
@@ -90,3 +90,25 @@ exports.createGreivance = async(req,res)=>{
         })
     }
 }
+
+
+exports.getAllGreivances = async (req, res) => {
+    try {
+        const greivances = await Greivance.find()
+            .populate("user", "name email") 
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            count: greivances.length,
+            greivances
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Unable to fetch grievances",
+            error: error.message
+        });
+    }
+};

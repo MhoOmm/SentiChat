@@ -62,12 +62,30 @@ export default function CommunityPage() {
             <span className="font-bold text-sm tracking-wide">SentiChat Community</span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3.5">
             <Link
               to="/community/dashboard"
               className="text-xs font-semibold text-white/50 hover:text-white transition-colors"
             >
               Dashboard
+            </Link>
+            <Link
+              to="/community/polls"
+              className="text-xs font-semibold text-white/50 hover:text-white transition-colors"
+            >
+              Polls
+            </Link>
+            <Link
+              to="/greivance"
+              className="text-xs font-semibold text-white/50 hover:text-white transition-colors"
+            >
+              Grievance
+            </Link>
+            <Link
+              to="/community/announcement"
+              className="text-xs font-semibold text-white/50 hover:text-white transition-colors"
+            >
+              Announcements
             </Link>
 
             <button

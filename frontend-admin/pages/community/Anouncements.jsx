@@ -45,7 +45,7 @@ export default function AnnouncementsPage() {
               </h2>
 
               <p className="text-sm text-white/80 leading-relaxed">
-                {item.content}
+                {item.message}
               </p>
             </div>
           ))

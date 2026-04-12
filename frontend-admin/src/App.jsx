@@ -9,7 +9,7 @@ import UserDashboard from "../pages/community/UserDashboard";
 import AnnouncementsPage from "../pages/community/Anouncements"
 import PollsPage from "../pages/community/PollsPage"
 
-import GrievancePage from "../pages/GrievancePage"
+import WriteGreivance from "../pages/community/Greivance"
 import Announcements from "../pages/AdminAnnouncements";
 import SentimentAnalysis from "../pages/AdminSentimentanalysis";
 
@@ -19,7 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/auth" />} />
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/greivance" element={<GrievancePage />} />
+        <Route path="/greivance" element={<WriteGreivance />} />
         <Route path="/admin/login-admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/community" element={<CommunityPage />} />
