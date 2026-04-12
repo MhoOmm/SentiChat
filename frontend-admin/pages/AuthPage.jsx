@@ -215,7 +215,7 @@ export default function AuthPage() {
       });
       // Store token / user as needed
       if (data?.token) localStorage.setItem("token", data.token);
-      navigate("/admin/dashboard");
+      navigate("/community");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Please try again.");
     } finally {

@@ -8,7 +8,7 @@ const adminRouter = require("./routes/admin.route");
 const userRoutes = require("./routes/userRoutes");
 
 const postRouter = require('./routes/postRouter')
-// const pollsRouter = require('./routes/pollsRouter')
+const pollsRouter = require('./routes/pollsRouter')
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -34,7 +34,7 @@ app.use("/api/user", userRoutes);
 
 // post
 app.use('/api/chat',postRouter);
-// app.use('/api/poll',pollsRouter);
+app.use('/api/poll',pollsRouter);
 
 app.listen(port, () => {
   console.log(`Server started on PORT:${port}`);

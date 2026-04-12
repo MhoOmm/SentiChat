@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema(
         otpExpires:{
             type:Date
         },
+        karma:{
+            type:Number,
+            default:0
+        },
         isVerified:{
             type:Boolean,
             required:true,

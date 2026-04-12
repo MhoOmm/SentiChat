@@ -1,13 +1,11 @@
-// const express = require('express')
-// const pollsRouter = express.Router
+const express = require("express");
+const router = express.Router();
 
-// const adminAuth= require('../middleware/admin.middleware')
+const { getAnnouncements } = require("../controllers/announcement.controller");
+const { getPolls,votePoll } = require("../controllers/poll.controller");
 
-// const {createPoll,showPolls,answerPoll}  = require('../controllers/pollsController')
+router.get("/announcements/all", getAnnouncements);
+router.get("/polls/all", getPolls); 
+router.post("/polls/vote",votePoll);
 
-// pollsRouter.post('/createPoll',adminAuth,createPoll)
-// pollsRouter.get('/getPoll',showPolls)
-// pollsRouter.post('/giveAnswer',answerPoll)
-
-
-// module.exports = pollsRouter
+module.exports = router;
