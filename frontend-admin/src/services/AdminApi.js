@@ -9,7 +9,8 @@ export const loginAdmin = (data) => {
 export const getAdmin = (token) => {
   return axios.get(`${API}/admin/dashboard`, {
     headers: {
-      Authorization: token
+      // Authorization: token
+      Authorization: `Bearer ${token}`
     }
   });
 };

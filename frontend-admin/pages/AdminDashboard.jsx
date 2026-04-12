@@ -189,7 +189,7 @@ export default function AdminDashboard() {
                 letterSpacing: "0.5px",
               }}
             >
-              KANISHK
+              DASHBOARD
             </span>
           </div>
         </div>
