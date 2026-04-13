@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 
-export default function WriteGreivance() {
+export default function WriteGrievance() {
   const [text, setText] = useState("");
   const [category, setCategory] = useState("academic");
   const [loading, setLoading] = useState(false);
@@ -39,11 +39,12 @@ export default function WriteGreivance() {
       setLoading(true);
 
       await axios.post(
-        "http://localhost:5000/api/chat/create-greivance",
+        "http://localhost:5000/api/chat/create-grievance",
         { text, category },
         {
           headers: {
-            Authorization: localStorage.getItem("token"),
+            // Authorization: localStorage.getItem("token"),
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );

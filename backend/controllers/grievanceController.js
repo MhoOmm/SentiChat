@@ -1,10 +1,10 @@
 const express = require("express")
-const Greivance = require("../models/Greivance")
+const Grievance = require("../models/Grievance")
 const User = require("../models/User")
 const axios = require("axios")
 
 
-exports.createGreivance = async(req,res)=>{
+exports.createGrievance = async(req,res)=>{
     try{
         const {text,category} = req.body
         const userId = req.user.id
@@ -25,7 +25,7 @@ exports.createGreivance = async(req,res)=>{
         const today = new Date()
         today.setHours(0,0,0,0)
 
-        const countGri = await Greivance.countDocuments({
+        const countGri = await Grievance.countDocuments({
             user:userId,
             createdAt:{ $gte: today }
         })
@@ -38,7 +38,7 @@ exports.createGreivance = async(req,res)=>{
             })
         }
 
-        const duplicate = await Greivance.findOne({
+        const duplicate = await Grievance.findOne({
             text: { $regex: new RegExp(`^${text.trim()}$`, "i") },
             category: category
         })
@@ -69,7 +69,7 @@ exports.createGreivance = async(req,res)=>{
         // }
 
 
-        const greivance  = await Greivance.create({
+        const grievance  = await Grievance.create({
             text,
             user:userId,
             category
@@ -78,8 +78,8 @@ exports.createGreivance = async(req,res)=>{
 
         return res.status(200).json({
             success:true,
-            greivance,
-            message:"greivance created success"
+            grievance,
+            message:"grievance created success"
         })
 
     }catch(error){
@@ -92,16 +92,16 @@ exports.createGreivance = async(req,res)=>{
 }
 
 
-exports.getAllGreivances = async (req, res) => {
+exports.getAllGrievances = async (req, res) => {
     try {
-        const greivances = await Greivance.find()
+        const grievances = await Grievance.find()
             .populate("user", "name email") 
             .sort({ createdAt: -1 });
 
         return res.status(200).json({
-            success: true,
-            count: greivances.length,
-            greivances
+            success: true, 
+            count: grievances.length,
+            grievances
         });
 
     } catch (error) {

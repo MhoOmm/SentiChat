@@ -76,7 +76,7 @@ export default function CommunityPage() {
               Polls
             </Link>
             <Link
-              to="/greivance"
+              to="/grievance"
               className="text-xs font-semibold text-white/50 hover:text-white transition-colors"
             >
               Grievance
