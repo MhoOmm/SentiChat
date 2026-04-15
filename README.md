@@ -6,7 +6,7 @@
 ## 📌 Overview  
 SentiChat is an AI-powered platform designed to analyze **student sentiment and detect hate speech** within a university environment. It enables students to express themselves anonymously while allowing administrators to monitor campus mood using **machine learning and data visualization tools**.
 
-The platform transforms raw student input into **actionable insights**, helping institutions make better decisions.
+The platform transforms raw student input into **actionable insights**, helping institutions make better decisions and get better insights.
 
 ---
 
