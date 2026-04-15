@@ -29,7 +29,7 @@ function App() {
         <Route path="/community/announcement" element={<AnnouncementsPage />} />
         <Route path="/community/polls" element={<PollsPage />} />
 
-        <Route path="/admin/announcements" element={<Announcements />} />
+        <Route path="/admin/announcements"element={<Announcements />} />
         <Route path="/admin/sentiments" element={<SentimentAnalysis />} />
         <Route path="/admin/grievances" element={<AdminGrievances/>} />
       </Routes>
