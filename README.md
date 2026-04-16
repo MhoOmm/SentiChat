@@ -1,155 +1,111 @@
 # 🎭 SentiChat  
-# Understanding Campus Voices, Intelligently
+## Understanding Campus Voices, Intelligently  
 
 ---
 
 ## 📌 Overview  
-SentiChat is an AI-powered platform designed to analyze **student sentiment and detect hate speech** within a university environment. It enables students to express themselves anonymously while allowing administrators to monitor campus mood using **machine learning and data visualization tools**.
+SentiChat is a platform designed to analyze **student sentiment and detect harmful or offensive content** within a university environment. It enables students to express themselves anonymously while allowing administrators to monitor campus mood and emotional trends.
 
-The platform transforms raw student input into **actionable insights**, helping institutions make better decisions and get better insights.
+The platform transforms student inputs into **meaningful insights**, helping institutions understand concerns, identify distress signals, and improve decision-making.
 
 ---
 
 ## 🚀 Key Features  
 
-### 👤 User Side
-- Anonymous login system (no identity exposure)  
-- Create posts and comment on discussions  
-- Submit grievances related to campus issues  
-- View admin announcements and participate in polls  
+### 👤 User Side  
+- Anonymous interaction system (no identity exposure)  
+- Create posts and participate in discussions  
+- Share concerns and campus-related issues  
+- View announcements and participate in polls  
 
-### 🛠️ Admin Side
-- Pre-authorized secure access  
-- Analyze campus sentiment using **Power BI dashboards**  
-- Monitor emotional trends on a weekly basis  
-- Create announcements and polls for students  
+### 🛠️ Admin Side  
+- Secure access for administrators  
+- Monitor overall campus sentiment  
+- Track emotional and behavioral trends over time  
+- Create announcements and engage with students  
 
 ---
 
-## 🧠 Machine Learning Models  
+## 🧠 Core Capabilities  
 
-### 1. Hate Speech Detection Model  
-- Built using **NLP + TF-IDF**  
+### Sentiment Analysis  
 - Classifies text into:
+  - Positive  
   - Neutral  
-  - Offensive  
-  - Hate  
+  - Negative  
 
-### 2. Emotion Detection Model (GoEmotion)  
-- Built using **LSTM (Deep Learning)**  
-- Detects emotions such as:
-  - Happy  
-  - Sad  
-  - Angry  
+### Content Moderation  
+- Detects and classifies content as:
+  - Normal  
+  - Offensive  
+  - Hate Speech  
 
 ---
 
-## 🏗️ System Architecture  
+## 🏗️ System Overview  
 
-SentiChat follows a **microservices-based architecture**:
+SentiChat follows a modular design consisting of:
 
-- **Frontend:** React + Redux + Tailwind CSS  
-- **Backend:** Node.js + Express.js  
-- **ML Service:** FastAPI (Python)  
-- **Database:** MongoDB  
-- **Cache:** Redis  
-- **Visualization:** Power BI  
-- **AI Integration:** Google Gemini API  
+- User Interface (interaction layer)  
+- Backend System (request handling)  
+- Processing Engine (text analysis)  
+- Data Storage (secure database)  
+- Analytics Layer (insights and visualization)  
 
 ---
 
 ## 🔄 Workflow  
 
 1. User submits text (post/comment/grievance)  
-2. Backend validates and processes the request  
-3. Text is sent to ML service (FastAPI)  
-4. ML models analyze:
-   - Sentiment (emotion)  
-   - Hate speech (toxicity)  
-5. Results are stored in MongoDB  
-6. Data is visualized via Power BI dashboards  
-7. Admin monitors insights and takes action  
+2. System validates and processes the input  
+3. Text is analyzed for sentiment and harmful content  
+4. Results are stored securely  
+5. Insights are generated and visualized  
+6. Administrators monitor trends and take action  
 
 ---
 
 ## 🌍 Real-World Applications  
 
-- 🎓 University campus sentiment monitoring  
-- 📱 Social media content moderation  
-- 🏢 Corporate employee feedback analysis  
-- 🌐 Online community/forum moderation  
-- 🧠 Mental health and well-being tracking  
+- 🎓 Campus sentiment and mental health monitoring  
+- 📱 Online community moderation  
+- 🏢 Employee feedback analysis  
+- 🌐 Social platform content filtering  
+- 🧠 Emotional trend analysis  
 
 ---
 
 ## 💡 Impact  
 
-- Real-time understanding of campus mood  
-- Early detection of student issues  
+- Real-time understanding of student sentiment  
+- Early detection of distress or dissatisfaction  
 - Reduction in toxic communication  
 - Data-driven administrative decisions  
-- Improved student-admin communication  
+- Improved student–admin communication  
 
 ---
 
 ## 🔐 Privacy & Security  
 
-- Fully **anonymous user system**  
-- No identity tracking by admins  
-- JWT-based authentication  
-- Rate limiting to prevent abuse  
-
----
-
-## 🛠️ Tech Stack  
-
-### Frontend  
-- React  
-- Redux Toolkit  
-- Tailwind CSS  
-- Framer Motion  
-
-### Backend  
-- Node.js  
-- Express.js  
-
-### Database & Cache  
-- MongoDB  
-- Redis  
-
-### Machine Learning  
-- Python  
-- FastAPI  
-- TensorFlow / Keras  
-- NLP (TF-IDF, LSTM)  
-
-### Analytics & AI  
-- Power BI  
-- Google Gemini API  
+- Fully anonymous user interaction  
+- No identity exposure to administrators  
+- Secure authentication mechanisms  
+- Protection against misuse and spam  
 
 ---
 
 ## 🔮 Future Enhancements  
 
-- Real-time alerts for flagged content  
-- Role-based access (moderators, users)  
-- Cloud deployment (AWS/GCP)  
-- Improved explainability of ML models  
+- Real-time alerts for critical or harmful content  
+- Role-based access (moderators, admins)  
+- Enhanced multilingual support  
+- Improved explainability of analysis results  
 - Advanced analytics dashboards  
 
 ---
 
-## 🤝 Contribution  
+## 📊 Datasets - 
 
-Contributions are welcome! Feel free to fork the repository and submit a pull request.
-
----
-
-
-# Datasets:- 
-
-HAteXplain- https://huggingface.co/datasets/Abhi0072/HateXplain
-
-GoEmotions- https://www.kaggle.com/datasets/debarshichanda/goemotions/data
-
-Hindi Abuses Datasets - https://github.com/pmathur5k10/Hinglish-Offensive-Text-Classification/blob/main/Hinglish_Profanity_List.csv
+- HAteXplain- https://huggingface.co/datasets/Abhi0072/HateXplain
+- GoEmotions- https://www.kaggle.com/datasets/debarshichanda/goemotions/data
+- Hindi Abuses Datasets - https://github.com/pmathur5k10/Hinglish-Offensive-Text-Classification/blob/main/Hinglish_Profanity_List.csv
