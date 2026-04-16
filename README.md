@@ -1,5 +1,5 @@
 # 🎭 SentiChat  
-## Advanced Sentiment & Hate Speech Detection Platform (University POV)
+# Understanding Campus Voices, Intelligently
 
 ---
 
