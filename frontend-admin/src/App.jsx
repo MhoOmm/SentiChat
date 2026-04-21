@@ -18,8 +18,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/auth" />} />
-        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/" element={<AuthPage />} />
         <Route path="/grievance" element={<WriteGrievance />} />
         <Route path="/admin/login-admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -29,7 +28,7 @@ function App() {
         <Route path="/community/announcement" element={<AnnouncementsPage />} />
         <Route path="/community/polls" element={<PollsPage />} />
 
-        <Route path="/admin/announcements" element={<Announcements />} />
+        <Route path="/admin/announcements"element={<Announcements />} />
         <Route path="/admin/sentiments" element={<SentimentAnalysis />} />
         <Route path="/admin/grievances" element={<AdminGrievances/>} />
       </Routes>
