@@ -79,8 +79,7 @@ SentiChat follows a modular design consisting of:
 
 - Real-time understanding of student sentiment  
 - Early detection of distress or dissatisfaction  
-- Reduction in toxic communication  
-- Data-driven administrative decisions  
+- Reduction in toxic communication   
 - Improved student–admin communication  
 
 ---
