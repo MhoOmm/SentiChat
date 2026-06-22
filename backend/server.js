@@ -45,3 +45,5 @@ app.use('/api/poll',pollsRouter);
 app.listen(port, () => {
   console.log(`Server started on PORT:${port}`);
 });
+
+module.exports = app;

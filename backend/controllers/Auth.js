@@ -133,6 +133,8 @@ exports.verifyOTP =  async(req,res) =>{
     const options = {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       httpOnly: true,
+      secure: true,
+      sameSite: "none",
     };
 
     return res.cookie("token", token, options).status(200).json({
@@ -191,6 +193,8 @@ exports.login = async(req,res) =>{
         const options = {
             expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
             httpOnly: true,
+            secure: true,
+            sameSite: "none",
         };
         res.cookie("token", token, options).status(200).json({
             success: true,
