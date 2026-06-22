@@ -38,8 +38,9 @@ export default function WriteGrievance() {
     try {
       setLoading(true);
 
+      const baseURL = import.meta.env.DEV ? "http://localhost:5000" : "https://senti-chat-ij79.vercel.app";
       await axios.post(
-        "http://localhost:5000/api/chat/create-grievance",
+        `${baseURL}/api/chat/create-grievance`,
         { text, category },
         {
           headers: {

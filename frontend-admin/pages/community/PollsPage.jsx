@@ -6,10 +6,12 @@ export default function PollsPage() {
   // 🔥 TEMP USER (replace later with auth)
   const userId = "user123";
 
+  const baseURL = import.meta.env.DEV ? "http://localhost:5000" : "https://senti-chat-ij79.vercel.app";
+
   const fetchPolls = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/poll/polls/all?userId=${userId}`
+        `${baseURL}/api/poll/polls/all?userId=${userId}`
       );
 
       const data = await res.json();
@@ -29,7 +31,7 @@ export default function PollsPage() {
   const handleVote = async (pollId, optionIndex) => {
     try {
       const res = await fetch(
-        "http://localhost:5000/api/poll/polls/vote",
+        `${baseURL}/api/poll/polls/vote`,
         {
           method: "POST",
           headers: {

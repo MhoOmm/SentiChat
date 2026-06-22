@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 export default function AnnouncementsPage() {
   const [announcements, setAnnouncements] = useState([]);
 
+  const baseURL = import.meta.env.DEV ? "http://localhost:5000" : "https://senti-chat-ij79.vercel.app";
+
   useEffect(() => {
-    fetch("http://localhost:5000/api/poll/announcements/all")
+    fetch(`${baseURL}/api/poll/announcements/all`)
       .then(res => res.json())
       .then(data => {
         if (data.success) setAnnouncements(data.announcements);

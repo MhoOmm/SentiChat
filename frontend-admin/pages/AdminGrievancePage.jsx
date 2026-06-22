@@ -39,8 +39,9 @@ export default function AdminGrievances() {
 
   const fetchGrievances = async () => {
     try {
+      const baseURL = import.meta.env.DEV ? "http://localhost:5000" : "https://senti-chat-ij79.vercel.app";
       const res = await axios.get(
-        "http://localhost:5000/api/admin/grievance", 
+        `${baseURL}/api/admin/grievance`, 
         {
           headers: {
             Authorization: `Bearer ${token}`,

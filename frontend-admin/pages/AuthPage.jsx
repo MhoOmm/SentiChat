@@ -6,7 +6,8 @@ import axios from "axios";
 /* ------------------------------------------------------------------
    API base
 ------------------------------------------------------------------ */
-const API = axios.create({ baseURL: "http://localhost:5000/api" });
+const baseURL = import.meta.env.DEV ? "http://localhost:5000/api" : "https://senti-chat-ij79.vercel.app/api";
+const API = axios.create({ baseURL, withCredentials: true });
 
 /* ------------------------------------------------------------------
    DiceBear helpers
