@@ -2,19 +2,19 @@
   "version": 2,
   "builds": [
     {
-      "src": "server.js",
+      "src": "backend/server.js",
       "use": "@vercel/node"
     }
   ],
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/server.js"
+      "source": "/api/(.*)",
+      "destination": "/backend/server.js"
     }
   ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/api/(.*)",
       "headers": [
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         { "key": "Access-Control-Allow-Origin", "value": "https://senti-chat.vercel.app" },
