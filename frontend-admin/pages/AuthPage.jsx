@@ -6,7 +6,7 @@ import axios from "axios";
 /* ------------------------------------------------------------------
    API base
 ------------------------------------------------------------------ */
-const baseURL = import.meta.env.DEV ? "http://localhost:5000/api" : "https://senti-chat-ij79.vercel.app/api";
+const baseURL = import.meta.env.DEV ? "http://localhost:5000/api" : "https://senti-chat-36sq.vercel.app/api";
 const API = axios.create({ baseURL, withCredentials: true });
 
 /* ------------------------------------------------------------------

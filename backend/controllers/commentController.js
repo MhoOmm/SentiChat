@@ -21,7 +21,7 @@ exports.createComment = async (req, res) => {
         let hate = { label: "non-hate", confidence: 0 };
 
         try {
-            const mlBaseUrl = process.env.NODE_ENV === "production" ? "https://senti-chat-36sq.vercel.app" : "http://127.0.0.1:10000";
+            const mlBaseUrl = process.env.NODE_ENV === "production" ? "https://senti-chat-ij79.vercel.app" : "http://127.0.0.1:10000";
             const hateResult = await axios.post(`${mlBaseUrl}/predict/hate-rnn`, { text })
             const SentimentResult = await axios.post(`${mlBaseUrl}/predict/sentiment`, { text })
             sentiment = { label: SentimentResult.data.prediction, confidence: SentimentResult.data.confidence }

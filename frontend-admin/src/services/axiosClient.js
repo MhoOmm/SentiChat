@@ -2,7 +2,7 @@ import axios from "axios";
 
 const baseURL = import.meta.env.DEV 
   ? "http://localhost:5000" 
-  : "https://senti-chat-ij79.vercel.app";
+  : "https://senti-chat-36sq.vercel.app";
 
 const axiosClient = axios.create({
     baseURL,

@@ -6,7 +6,7 @@ export default function PollsPage() {
   // 🔥 TEMP USER (replace later with auth)
   const userId = "user123";
 
-  const baseURL = import.meta.env.DEV ? "http://localhost:5000" : "https://senti-chat-ij79.vercel.app";
+  const baseURL = import.meta.env.DEV ? "http://localhost:5000" : "https://senti-chat-36sq.vercel.app";
 
   const fetchPolls = async () => {
     try {
