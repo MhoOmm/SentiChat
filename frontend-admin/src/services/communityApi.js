@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from "./axiosClient";
 
-const API = "http://localhost:5000/api/chat";
+const API = "/api/chat";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");

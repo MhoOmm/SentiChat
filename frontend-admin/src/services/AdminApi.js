@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from "./axiosClient";
 
-const API = "http://localhost:5000/api";
+const API = "/api";
 
 export const loginAdmin = (data) => {
   return axios.post(`${API}/admin/login-admin`, data);

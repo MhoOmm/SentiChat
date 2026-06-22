@@ -24,13 +24,15 @@ exports.createPost = async(req,res)=>{
             })
         }
 
+        const mlBaseUrl = process.env.NODE_ENV === "production" ? "https://senti-chat-36sq.vercel.app" : "http://127.0.0.1:10000";
+
         const hateResult = await axios.post(
-            'http://127.0.0.1:10000/predict/hate-rnn',
+            `${mlBaseUrl}/predict/hate-rnn`,
             {text}
         )
 
         const SentimentResult = await axios.post(
-            'http://127.0.0.1:10000/predict/sentiment',
+            `${mlBaseUrl}/predict/sentiment`,
             {text}
         )
 

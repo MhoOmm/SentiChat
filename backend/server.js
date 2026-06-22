@@ -18,10 +18,16 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = ["http://127.0.0.1:10000", "http://localhost:5173", "http://localhost:5174"];
+const allowedOrigins = ["http://127.0.0.1:10000", "http://localhost:5173", "http://localhost:5174", "https://senti-chat-36sq.vercel.app"];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || origin.includes("vercel.app")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
 
