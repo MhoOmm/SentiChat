@@ -29,15 +29,18 @@ exports.createPost = async(req,res)=>{
 
         try {
             const mlBaseUrl = process.env.NODE_ENV === "production" ? "https://sentichat-rzlk.onrender.com" : "http://127.0.0.1:10000";
+            const mlConfig = { timeout: 120000 }; // 120s to survive Render cold start
 
             const hateResult = await axios.post(
                 `${mlBaseUrl}/predict/hate-rnn`,
-                {text}
+                {text},
+                mlConfig
             )
 
             const SentimentResult = await axios.post(
                 `${mlBaseUrl}/predict/sentiment`,
-                {text}
+                {text},
+                mlConfig
             )
 
             sentiment = {
