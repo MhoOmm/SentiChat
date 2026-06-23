@@ -24,25 +24,32 @@ exports.createPost = async(req,res)=>{
             })
         }
 
-        const mlBaseUrl = process.env.NODE_ENV === "production" ? "https://sentichat-rzlk.onrender.com" : "http://127.0.0.1:10000";
+        let sentiment = { label: "neutral", confidence: 0 };
+        let hate = { label: "neutral", confidence: 0 };
 
-        const hateResult = await axios.post(
-            `${mlBaseUrl}/predict/hate-rnn`,
-            {text}
-        )
+        try {
+            const mlBaseUrl = process.env.NODE_ENV === "production" ? "https://sentichat-rzlk.onrender.com" : "http://127.0.0.1:10000";
 
-        const SentimentResult = await axios.post(
-            `${mlBaseUrl}/predict/sentiment`,
-            {text}
-        )
+            const hateResult = await axios.post(
+                `${mlBaseUrl}/predict/hate-rnn`,
+                {text}
+            )
 
-        const sentiment = {
-            label : SentimentResult.data.prediction,
-            confidence : SentimentResult.data.confidence
-        }
-        const hate = {
-            label : hateResult.data.prediction,
-            confidence : hateResult.data.confidence
+            const SentimentResult = await axios.post(
+                `${mlBaseUrl}/predict/sentiment`,
+                {text}
+            )
+
+            sentiment = {
+                label : SentimentResult.data.prediction,
+                confidence : SentimentResult.data.confidence
+            }
+            hate = {
+                label : hateResult.data.prediction,
+                confidence : hateResult.data.confidence
+            }
+        } catch (mlErr) {
+            console.log("ML service unavailable, skipping analysis:", mlErr.message)
         }
 
         const post  = await Post.create({
