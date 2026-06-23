@@ -3,6 +3,6 @@ fastapi
 uvicorn
 numpy
 torch==2.12.1+cpu
-tensorflow==2.19.0
+tensorflow-cpu
 scikit-learn
 pydantic
